@@ -1,0 +1,94 @@
+<!doctype html>
+<html>
+	<head>	
+		<meta charset="utf-8" />
+		<title></title>
+		<style>
+			*{margin:0;padding:0;}
+			div{width:900px;border:1px solid red;margin:0 auto;overflow:hidden;}
+			ul{width:250px;border:1px solid #000;float:left;margin:24px;}
+			li{list-style:none;border:1px solid tomato;margin:5px;}
+		</style>
+
+		<script>
+		window.onload = function()
+		{
+			var oTmp = document.getElementsByTagName('ul');
+			var aUl = [];
+
+			//每屏的颜色不一样，只允许加载五次 ， 顺便 距离下面还有5像素的提前加载
+
+			var color = ['green' , 'pink' , 'tomato' , 'blue' , 'yellow'];
+
+			var bFlag = 0;
+
+			for (var i=0;i<oTmp.length;i++) {
+				aUl.push(oTmp[i]);
+			}
+			createLi();
+
+			//获取可视区高度
+			var clientHeight = document.documentElement.clientHeight;
+
+			window.onscroll = function()
+			{
+				//获取滚动距离
+				var scrolltop = document.body.scrollTop || document.documentElement.scrollTop;
+
+				//获取最大滚动距离
+
+				var scrollHeight = document.body.scrollHeight;
+
+				if (clientHeight + scrolltop >= scrollHeight-100 ) {
+					//createLi();
+					if (bFlag >= 5) {
+						return false;
+					}
+					createLi();
+				}
+
+			}
+
+			function createLi()
+			{
+				bFlag++;
+				for (var i=0;i<30;i++) {
+				var oLi = document.createElement('li');
+				var oH = rand(100 , 300);
+				oLi.innerHTML = i;
+
+				oLi.style.height = oH+'px';
+				oLi.style.fontSize = '40px';
+				oLi.style.lineHeight = oH+'px';
+				oLi.style.textAlign = 'center';
+				oLi.style.background = color[bFlag-1];
+
+				 //开始插入li
+
+				aUl.sort(function(aUl1,aUl2){
+					return aUl1.offsetHeight - aUl2.offsetHeight;
+				});
+
+				aUl[0].appendChild(oLi);
+
+			}
+
+			}
+
+			function rand(n , m)
+			{
+				return parseInt(Math.random()*(m-n+1)+n);
+			}
+		}
+		</script>
+
+	</head>
+
+	<body>
+		<div>
+			<ul></ul>
+			<ul></ul>
+			<ul></ul>
+		</div>
+	</body>
+</html>
